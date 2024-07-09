@@ -81,18 +81,7 @@ def enter_attendance_records(parent):
         function()
     elif confirm == "Yes":
         checkboxQuestion = [
-                inquirer.Checkbox('1', "Class 1", ["A", "B", "C", "D", "E","F"]),
-                inquirer.Checkbox('2', "Class 2", ["A", "B", "C", "D", "E","F"]),
-                inquirer.Checkbox('3', "Class 3", ["A", "B", "C", "D", "E","F"]),
-                inquirer.Checkbox('4', "Class 4", ["A", "B", "C", "D", "E","F"]),
-                inquirer.Checkbox('5', "Class 5", ["A", "B", "C", "D", "E","F"]),
-                inquirer.Checkbox('6', "Class 6", ["A", "B", "C", "D", "E","F"]),
-                inquirer.Checkbox('7', "Class 7", ["A", "B", "C", "D", "E","F"]),
-                inquirer.Checkbox('8', "Class 8", ["A", "B", "C", "D", "E","F"]),
-                inquirer.Checkbox('9', "Class 9", ["A", "B", "C", "D", "E","F"]),
-                inquirer.Checkbox('10', "Class 10", ["A", "B", "C", "D", "E","F"]),
-                inquirer.Checkbox('11', "Class 11", ["A", "B", "C", "D", "E","F"]),
-                inquirer.Checkbox('12', "Class 12", ["A", "B", "C", "D", "E","F"])
+            """doubt ful"""
         ]
         answer = inquirer.prompt(checkboxQuestion)
         print(answer)
