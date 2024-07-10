@@ -3,6 +3,7 @@ import mysql.connector as ms
 import datetime as dt
 import inquirer
 import typer
+import tabulate
 
 #-----> Date and time
 day = dt.datetime.today().day
@@ -29,27 +30,32 @@ table_name = "Names".lower()
 table_creation_query = f"create table if not exists {table_name} (Admin VARCHAR(10) PRIMARY KEY, Name VARCHAR(20), Surname VARCHAR(20), Class VARCHAR(5), Section VARCHAR(2));"
 cursor.execute(table_creation_query)
 print(f"Table Created : {table_name}")
-
+        
+Headers = ["ADMIN", "NAME"]
 for i in range(1,13):
     table_name = f"{i}_{year}"
     command = f"CREATE TABLE IF NOT EXISTS {table_name} (Admin VARCHAR(10),"
     if i in [1,3,5,7,8,10,12]:
         for j in range(1,32):
             command = command + f"`{j}` VARCHAR(3) DEFAULT NULL, "
+            Headers.append(j)
     if i in [4,6,9,11]:
         for j in range(1,31):
             command = command + f"`{j}` VARCHAR(3) DEFAULT NULL, "
+            Headers.append(j)
     if i == 2:
         if leap == True:
             for j in range(1,30):
                 command = command + f"`{j}` VARCHAR(3) DEFAULT NULL, "
+                Headers.append(j)
         if leap == False:
             for j in range(1,29):
                 command = command + f"`{j}` VARCHAR(3) DEFAULT NULL, "
+                Headers.append(j)
     command = command[:-2]
     command = command + ");"
-    print(command)
-    print()
+    #print(command)
+    #print()
     cursor.execute(command)
 print("Tables Created Successfully")
 
@@ -109,7 +115,23 @@ def retrieve_attendance_records(parent):
     if confirm == "Nope":
         function()
     elif confirm == "Yes":
-        conn.commit()
+        Month = typer.prompt("Which Month")
+        Year = typer.prompt("Which Year")
+        Class = typer.prompt("Which Class")
+        Section = typer.prompt("Which Section")
+        retrieve_query = f"SELECT * FROM NAMES WHERE CLASS = '{Class}' AND SECTION = '{Section}';"
+        cursor.execute(retrieve_query)
+        res = cursor.fetchall()
+        data = []
+        for i in range(len(res)):
+            admin = res[i][0]
+            data.append(admin)
+        res = []
+        for i in range(len(data)):
+            retrieve_query = f"SELECT * FROM {Month}_{Year} WHERE ADMIN = '{data[i]}';"
+            cursor.execute(retrieve_query)
+            res.append(cursor.fetchall()[0])
+        print(tabulate.tabulate(res, headers = Headers, tablefmt="rounded_outline"))
         function()
 
 def main():
