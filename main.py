@@ -54,8 +54,6 @@ for i in range(1,13):
                 Headers.append(j)
     command = command[:-2]
     command = command + ");"
-    #print(command)
-    #print()
     cursor.execute(command)
 print("Tables Created Successfully")
 
