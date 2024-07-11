@@ -132,6 +132,31 @@ def retrieve_attendance_records(parent):
         print(tabulate.tabulate(res, headers = Headers, tablefmt="rounded_outline"))
         function()
 
+def alerts(parent):
+    name_get_query = f"SELECT ADMIN, NAME FROM names;"
+    cursor.execute(name_get_query)
+    admin_name = dict(cursor.fetchall())
+
+    table_name = f"{month}_{year}"
+    verify_query = f"SELECT * FROM {table_name};"
+    cursor.execute(verify_query)
+    res = cursor.fetchall()
+
+    alert = {}
+    for data in res:
+        absence = True
+        for i in range(1,6):
+            if absence == True:
+                if data[day-i] != 'P':
+                    absence = True
+                else:
+                    absence = False
+            else:
+                break
+        if absence == True:
+            alert[admin_name[data[0]]]=5
+    print(alert)
+    
 def main():
     questions = [
         inquirer.List(
@@ -140,7 +165,8 @@ def main():
             [
                 "Add Student Names",
                 "Enter Attendance Records",
-                "Retrieve Attendance Records"
+                "Retrieve Attendance Records",
+                "Alerts"
             ]
         )    
     ]
